@@ -176,7 +176,7 @@ const Landing3D = () => {
                     onClick={() => {
                       // Create download link for resume
                       const resumeLink = document.createElement('a')
-                      resumeLink.href = '/Resume/LP Resume.pdf'
+                      resumeLink.href = '/Resume/Logesh_Perumal_C_UpdatedResume.pdf'
                       resumeLink.download = 'Logesh_Perumal_C_Resume.pdf'
                       resumeLink.style.display = 'none'
                       document.body.appendChild(resumeLink)
