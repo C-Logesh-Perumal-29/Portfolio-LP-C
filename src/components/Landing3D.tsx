@@ -223,7 +223,7 @@ const Landing3D = () => {
                     <Linkedin className="h-5 w-5 text-slate-700 dark:text-slate-200" />
                   </a>
                   <a
-                    href="mailto:clogeshperumal@gmail.com"
+                    href="mailto:clogeshperumal2004@gmail.com"
                     className="p-2 rounded-full backdrop-blur-sm bg-white/50 dark:bg-white/10 border border-white/30 dark:border-white/20 hover:bg-white/70 dark:hover:bg-white/20 transition-all hover:scale-110"
                     aria-label="Email"
                   >

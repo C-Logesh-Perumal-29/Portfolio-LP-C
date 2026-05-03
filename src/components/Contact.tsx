@@ -1,31 +1,47 @@
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { Github, Linkedin, Mail, ExternalLink } from 'lucide-react'
 
 const Contact = () => {
-  const socialLinks = [
-    { 
-      icon: Mail, 
-      label: 'Email', 
-      url: 'mailto:clogeshperumal@gmail.com', 
-      color: 'text-gray-700 dark:text-gray-300',
-      hoverColor: 'group-hover:text-red-600 dark:group-hover:text-red-500',
-      bgGradient: 'from-red-50 to-pink-50 dark:from-red-950/20 dark:to-pink-950/20'
+  const contacts = [
+    {
+      icon: Mail,
+      platform: 'Email',
+      handle: 'clogeshperumal2004@gmail.com',
+      url: 'mailto:clogeshperumal2004@gmail.com',
+      gradient: 'from-rose-500 to-pink-500',
+      lightBg: 'bg-rose-50 dark:bg-rose-950/30',
+      iconBg: 'bg-rose-100 dark:bg-rose-900/40',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
-    { 
-      icon: Github, 
-      label: 'GitHub', 
-      url: 'https://github.com/C-Logesh-Perumal-29', 
-      color: 'text-gray-700 dark:text-gray-300',
-      hoverColor: 'group-hover:text-gray-900 dark:group-hover:text-gray-100',
-      bgGradient: 'from-gray-50 to-slate-50 dark:from-gray-950/20 dark:to-slate-950/20'
+    {
+      icon: Github,
+      platform: 'GitHub',
+      handle: 'C-Logesh-Perumal-29',
+      url: 'https://github.com/C-Logesh-Perumal-29',
+      gradient: 'from-gray-700 to-slate-700',
+      lightBg: 'bg-gray-50 dark:bg-slate-800/60',
+      iconBg: 'bg-gray-100 dark:bg-slate-700/60',
+      iconColor: 'text-gray-700 dark:text-gray-300',
     },
-    { 
-      icon: Linkedin, 
-      label: 'LinkedIn', 
-      url: 'https://www.linkedin.com/in/logesh-perumal-c/', 
-      color: 'text-gray-700 dark:text-gray-300',
-      hoverColor: 'group-hover:text-blue-600 dark:group-hover:text-blue-500',
-      bgGradient: 'from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20'
+    {
+      icon: Linkedin,
+      platform: 'LinkedIn',
+      handle: 'logesh-perumal-c',
+      url: 'https://www.linkedin.com/in/logesh-perumal-c/',
+      gradient: 'from-blue-600 to-cyan-500',
+      lightBg: 'bg-blue-50 dark:bg-blue-950/30',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/40',
+      iconColor: 'text-blue-600 dark:text-blue-400',
+    },
+    {
+      icon: ExternalLink,
+      platform: 'Behance',
+      handle: 'logeshperumal',
+      url: 'https://www.behance.net/logeshperumal',
+      gradient: 'from-indigo-500 to-violet-500',
+      lightBg: 'bg-indigo-50 dark:bg-indigo-950/30',
+      iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
+      iconColor: 'text-indigo-600 dark:text-indigo-400',
     },
   ]
 
@@ -34,21 +50,33 @@ const Contact = () => {
       id="contact"
       className="relative min-h-screen py-16 sm:py-20 md:py-24 px-4 sm:px-6 overflow-hidden flex items-center"
     >
-      {/* Clean Background */}
+      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 via-white to-cyan-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950/30">
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
-        {/* Header Section */}
+      <div className="container mx-auto max-w-3xl relative z-10">
+
+        {/* ── Header ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16 md:mb-20"
+          className="text-center mb-10 sm:mb-14"
         >
+          {/* Availability badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-semibold mb-6"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Open to Opportunities
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -58,7 +86,7 @@ const Contact = () => {
           >
             Get In Touch
           </motion.h2>
-          
+
           <motion.div
             initial={{ width: 0 }}
             whileInView={{ width: '120px' }}
@@ -66,96 +94,80 @@ const Contact = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="h-1 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full mb-6 sm:mb-8"
           />
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto leading-relaxed"
           >
-            Have a project in mind or want to collaborate? Feel free to reach out!
+            Have a project in mind or want to collaborate? I'd love to hear from you — pick any platform below.
           </motion.p>
         </motion.div>
 
-        {/* Social Links - Clean Card Design */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8"
-        >
-          {socialLinks.map((social, index) => {
-            const Icon = social.icon
+        {/* ── Contact Cards ── */}
+        <div className="flex flex-col gap-3 sm:gap-4">
+          {contacts.map((c, i) => {
+            const Icon = c.icon
             return (
               <motion.a
-                key={index}
-                href={social.url}
-                target="_blank"
+                key={i}
+                href={c.url}
+                target={c.url.startsWith('mailto') ? '_self' : '_blank'}
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ 
-                  duration: 0.4, 
-                  delay: 0.5 + index * 0.1,
-                  ease: 'easeOut'
-                }}
-                whileHover={{ 
-                  scale: 1.05,
-                  y: -8
-                }}
-                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.45, delay: 0.3 + i * 0.08 }}
+                whileHover={{ x: 6 }}
+                whileTap={{ scale: 0.98 }}
                 className="group relative"
               >
-                {/* Clean White Card */}
-                <div className={`
-                  relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 
-                  rounded-2xl sm:rounded-3xl
-                  bg-white dark:bg-slate-800
-                  shadow-lg hover:shadow-2xl
-                  border border-gray-200 dark:border-slate-700
-                  transition-all duration-300
-                  group-hover:border-transparent
-                  overflow-hidden
-                `}>
-                  {/* Subtle Background Gradient on Hover */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${social.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                  />
+                {/* Glow */}
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${c.gradient} rounded-2xl opacity-0 group-hover:opacity-25 blur-sm transition-opacity duration-400 pointer-events-none`} />
 
-                  {/* Icon Container */}
-                  <div className="relative z-10 w-full h-full flex items-center justify-center">
-                    <motion.div
-                      whileHover={{ 
-                        scale: 1.15,
-                        rotate: [0, -5, 5, -5, 0]
-                      }}
-                      transition={{ 
-                        duration: 0.5,
-                        rotate: { duration: 0.6 }
-                      }}
-                    >
-                      <Icon 
-                        className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 ${social.color} ${social.hoverColor} transition-colors duration-300`}
-                        strokeWidth={2}
-                      />
-                    </motion.div>
+                <div className="relative flex items-center gap-4 px-5 py-4 sm:px-6 sm:py-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm group-hover:shadow-lg transition-all duration-300 overflow-hidden">
+
+                  {/* Left accent border */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${c.gradient} rounded-l-2xl`} />
+
+                  {/* Icon box */}
+                  <div className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${c.iconBg} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ml-2`}>
+                    <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${c.iconColor}`} strokeWidth={2} />
                   </div>
 
-                  {/* Shimmer Effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100"
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: '200%' }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
-                  />
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-0.5">
+                      {c.platform}
+                    </p>
+                    <p className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-100 truncate">
+                      {c.handle}
+                    </p>
+                  </div>
+
+                  {/* Arrow — faint at rest, vivid on hover */}
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br ${c.gradient} flex items-center justify-center opacity-20 group-hover:opacity-100 transition-all duration-300 -translate-x-1 group-hover:translate-x-0`}>
+                    <ExternalLink className="w-3.5 h-3.5 text-white" />
+                  </div>
                 </div>
               </motion.a>
             )
           })}
-        </motion.div>
+        </div>
+
+        {/* ── Footer note ── */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="text-center text-xs text-gray-400 dark:text-gray-600 mt-8"
+        >
+          Usually respond within 24 hours · Based in Tamil Nadu, India
+        </motion.p>
+
       </div>
     </section>
   )

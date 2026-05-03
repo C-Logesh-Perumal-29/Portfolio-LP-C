@@ -225,45 +225,45 @@ const UIDesigns = () => {
           ))}
         </div>
 
-        {/* Enhanced Lightbox Dialog */}
+        {/* Lightbox Dialog */}
         <Dialog open={selectedDesign !== null} onOpenChange={() => setSelectedDesign(null)}>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0 bg-white dark:bg-slate-900">
+          <DialogContent className="max-w-4xl w-full p-0 bg-white dark:bg-slate-900 overflow-hidden">
             {selectedDesign !== null && (
               <>
-                {/* Header with Gradient */}
-                <div className={`relative p-6 sm:p-8 bg-gradient-to-r ${designs[selectedDesign].gradient}`}>
+                {/* Gradient header */}
+                <div className={`relative px-6 py-5 sm:px-8 sm:py-6 bg-gradient-to-r ${designs[selectedDesign].gradient}`}>
                   <DialogHeader>
-                    <DialogTitle className="text-2xl sm:text-3xl text-white mb-3">
+                    <DialogTitle className="text-xl sm:text-2xl font-extrabold text-white mb-1">
                       {designs[selectedDesign].title}
                     </DialogTitle>
-                    <DialogDescription className="text-white/90 text-base sm:text-lg leading-relaxed">
+                    <DialogDescription className="text-white/80 text-sm sm:text-base leading-relaxed line-clamp-2">
                       {designs[selectedDesign].description}
                     </DialogDescription>
                   </DialogHeader>
-                  
-                  {/* Behance Link Button */}
+
                   <motion.a
                     href={designs[selectedDesign].behanceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl text-white font-semibold text-sm transition-all duration-300"
-                    whileHover={{ scale: 1.05, x: 5 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl text-white font-semibold text-sm transition-all duration-300"
+                    whileHover={{ scale: 1.04, x: 4 }}
+                    whileTap={{ scale: 0.96 }}
                   >
-                    <span>View Full Project on Behance</span>
-                    <ExternalLink className="w-4 h-4" />
+                    <span>View on Behance</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
                   </motion.a>
                 </div>
 
-                {/* Image Container */}
-                <div className="p-4 sm:p-6 md:p-8">
+                {/* Image — height capped so it never overflows the screen */}
+                <div className="p-4 sm:p-5 bg-gray-50 dark:bg-slate-800">
                   <motion.img
                     src={designs[selectedDesign].image}
                     alt={designs[selectedDesign].title}
-                    className="w-full h-auto rounded-xl shadow-2xl"
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    className="w-full rounded-xl shadow-xl object-contain"
+                    style={{ maxHeight: '58vh' }}
+                    initial={{ opacity: 0, scale: 0.97 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.35 }}
                   />
                 </div>
               </>

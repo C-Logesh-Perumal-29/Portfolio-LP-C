@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Project — Developer Guide</title>
+  <style>
+    /* ── Reset & Base ──────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.7;
+      padding: 2rem 1rem 4rem;
+    }
+    a { color: #818cf8; }
+
+    /* ── Layout ────────────────────────────────────── */
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* ── Hero ──────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed, #a21caf);
+      border-radius: 1.25rem;
+      padding: 2.5rem 2rem;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .hero h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: .5rem; }
+    .hero p  { color: rgba(255,255,255,.8); font-size: 1rem; }
+    .file-badge {
+      display: inline-block;
+      margin-top: 1rem;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      font-size: .8rem;
+      font-family: monospace;
+      padding: .3rem .9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    /* ── Section ───────────────────────────────────── */
+    .section {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.75rem 1.75rem 2rem;
+      margin-bottom: 1.75rem;
+    }
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #a78bfa;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-title .step-badge {
+      background: #4f46e5;
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+    }
+
+    /* ── Code Block ────────────────────────────────── */
+    pre {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: .75rem;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      font-size: .82rem;
+      line-height: 1.75;
+      margin: .75rem 0;
+    }
+    code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    .c-key    { color: #f8fafc; }
+    .c-str    { color: #4ade80; }
+    .c-bool   { color: #fb923c; }
+    .c-type   { color: #38bdf8; }
+    .c-comment{ color: #64748b; font-style: italic; }
+    .c-req    { color: #f472b6; }
+    .c-opt    { color: #facc15; }
+
+    /* ── Table ─────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: .5rem; }
+    th { background: #334155; color: #94a3b8; font-weight: 600;
+         text-align: left; padding: .6rem .9rem; }
+    td { padding: .55rem .9rem; border-bottom: 1px solid #1e293b; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #1e293b; }
+    .tag {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700;
+      padding: .15rem .5rem; border-radius: 999px;
+    }
+    .tag-req  { background: #7f1d1d; color: #fca5a5; }
+    .tag-opt  { background: #713f12; color: #fde68a; }
+
+    /* ── Category Pills ────────────────────────────── */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .75rem; }
+    .pill {
+      font-size: .78rem; font-weight: 600;
+      padding: .3rem .85rem;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .pill-violet  { background:#2e1065; color:#c4b5fd; border-color:#6d28d9; }
+    .pill-cyan    { background:#083344; color:#67e8f9; border-color:#0e7490; }
+    .pill-emerald { background:#052e16; color:#6ee7b7; border-color:#065f46; }
+    .pill-orange  { background:#431407; color:#fdba74; border-color:#9a3412; }
+    .pill-fuchsia { background:#4a044e; color:#f0abfc; border-color:#86198f; }
+
+    /* ── Gradient Reference ─────────────────────────── */
+    .grad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-top: .75rem; }
+    .grad-card {
+      border-radius: .6rem;
+      overflow: hidden;
+      border: 1px solid #334155;
+      font-size: .77rem;
+    }
+    .grad-bar { height: 28px; }
+    .grad-label { padding: .4rem .7rem; background: #1e293b; color: #94a3b8; font-family: monospace; }
+
+    /* ── Note Box ──────────────────────────────────── */
+    .note {
+      background: #1e3a5f;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 .6rem .6rem 0;
+      padding: .8rem 1.1rem;
+      font-size: .85rem;
+      color: #bfdbfe;
+      margin-top: .9rem;
+    }
+    .warn {
+      background: #422006;
+      border-left: 4px solid #f97316;
+      border-radius: 0 .6rem .6rem 0;
+      padding: .8rem 1.1rem;
+      font-size: .85rem;
+      color: #fed7aa;
+      margin-top: .9rem;
+    }
+
+    /* ── Inline code ───────────────────────────────── */
+    p code, li code {
+      background: #0f172a; border: 1px solid #334155;
+      border-radius: .3rem; padding: .05rem .35rem;
+      font-size: .8rem; font-family: monospace; color: #a78bfa;
+    }
+    ul { padding-left: 1.4rem; }
+    li { margin-bottom: .35rem; }
+    p  { margin-bottom: .7rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── Hero ─────────────────────────────────────────────────── -->
+  <div class="hero">
+    <h1>📁 Add New Project — Developer Guide</h1>
+    <p>Step-by-step reference for adding projects to the portfolio</p>
+    <span class="file-badge">src/components/Projects.tsx</span>
+  </div>
+
+  <!-- ── Step 1 : Project Object Fields ──────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 1</span>
+      Project Object — All Fields
+    </div>
+
+    <p>Each project is one object inside the <code>projects</code> array in <code>Projects.tsx</code>. The full shape is:</p>
+
+    <pre><code><span class="c-comment">// Minimal — no video, no badge</span>
+{
+  <span class="c-key">title</span>      : <span class="c-str">'Your Project Name'</span>,          <span class="c-comment">// REQUIRED</span>
+  <span class="c-key">subtitle</span>   : <span class="c-str">'Short one-line tagline'</span>,       <span class="c-comment">// REQUIRED</span>
+  <span class="c-key">description</span>: <span class="c-str">'2-3 sentence project description.'</span>, <span class="c-comment">// REQUIRED</span>
+  <span class="c-key">tech</span>       : [<span class="c-str">'Python'</span>, <span class="c-str">'React'</span>, <span class="c-str">'FastAPI'</span>],   <span class="c-comment">// REQUIRED — array of strings</span>
+  <span class="c-key">category</span>   : <span class="c-str">'Machine Learning'</span>,            <span class="c-comment">// REQUIRED — must be exact string (see Step 2)</span>
+  <span class="c-key">github</span>     : <span class="c-str">'https://github.com/C-Logesh-Perumal-29/repo'</span>, <span class="c-comment">// REQUIRED</span>
+  <span class="c-key">demo</span>       : <span class="c-str">'#'</span>,                          <span class="c-comment">// REQUIRED — use '#' if no live demo</span>
+  <span class="c-key">featured</span>   : <span class="c-bool">false</span>,                        <span class="c-comment">// REQUIRED — true = large featured card</span>
+  <span class="c-key">badge</span>      : <span class="c-str">'New'</span>,                        <span class="c-comment">// OPTIONAL — small label shown on card</span>
+  <span class="c-key">gradient</span>   : <span class="c-str">'from-sky-500 to-blue-600'</span>,   <span class="c-comment">// REQUIRED — Tailwind gradient (see Step 3)</span>
+  <span class="c-key">videoEmbed</span> : <span class="c-str">'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:XXXXXXXXX?compact=1'</span>,
+                                              <span class="c-comment">// OPTIONAL — LinkedIn embed src (opens video popup on Demo click)</span>
+},</code></pre>
+
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Required?</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>title</code></td><td>string</td><td><span class="tag tag-req">Required</span></td><td>Project name shown on card header</td></tr>
+        <tr><td><code>subtitle</code></td><td>string</td><td><span class="tag tag-req">Required</span></td><td>One-line tagline shown below title</td></tr>
+        <tr><td><code>description</code></td><td>string</td><td><span class="tag tag-req">Required</span></td><td>2–3 sentences; grid cards clip at 3 lines</td></tr>
+        <tr><td><code>tech</code></td><td>string[]</td><td><span class="tag tag-req">Required</span></td><td>Grid cards show first 5; overflow shown as "+N more"</td></tr>
+        <tr><td><code>category</code></td><td>Category</td><td><span class="tag tag-req">Required</span></td><td>Must exactly match one of the 5 allowed strings</td></tr>
+        <tr><td><code>github</code></td><td>string (URL)</td><td><span class="tag tag-req">Required</span></td><td>Full GitHub repo URL</td></tr>
+        <tr><td><code>demo</code></td><td>string (URL)</td><td><span class="tag tag-req">Required</span></td><td>Use <code>'#'</code> if no live link. Ignored when <code>videoEmbed</code> is set</td></tr>
+        <tr><td><code>featured</code></td><td>boolean</td><td><span class="tag tag-req">Required</span></td><td><code>true</code> → large featured card (always visible). <code>false</code> → filterable grid card</td></tr>
+        <tr><td><code>badge</code></td><td>string</td><td><span class="tag tag-opt">Optional</span></td><td>e.g. <code>'93.5% Accuracy'</code>, <code>'Real-time'</code>, <code>'AI-Powered'</code></td></tr>
+        <tr><td><code>gradient</code></td><td>string</td><td><span class="tag tag-req">Required</span></td><td>Tailwind gradient classes — see Step 3 for ready-to-use values</td></tr>
+        <tr><td><code>videoEmbed</code></td><td>string (URL)</td><td><span class="tag tag-opt">Optional</span></td><td>LinkedIn embed src. When present, Demo button opens inline video popup instead of navigating</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Step 2 : Categories ──────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 2</span>
+      Available Categories
+    </div>
+
+    <p>The <code>category</code> field must be <strong>one of these exact strings</strong> (case-sensitive):</p>
+
+    <div class="pill-grid">
+      <span class="pill pill-violet">Generative AI</span>
+      <span class="pill pill-cyan">Computer Vision</span>
+      <span class="pill pill-emerald">Machine Learning</span>
+      <span class="pill pill-orange">Automation</span>
+      <span class="pill pill-fuchsia">Full Stack</span>
+    </div>
+
+    <div class="note">
+      💡 <strong>Machine Learning</strong> category exists in the code but has no projects yet — it is ready to use.
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <p><strong>To add a brand-new category</strong> (e.g. <code>'Data Science'</code>), update 3 places in <code>Projects.tsx</code>:</p>
+
+      <pre><code><span class="c-comment">// 1. Add to the type (line ~258)</span>
+<span class="c-type">type</span> Category = <span class="c-str">'All'</span> | <span class="c-str">'Generative AI'</span> | <span class="c-str">'Computer Vision'</span> | <span class="c-str">'Machine Learning'</span>
+               | <span class="c-str">'Automation'</span> | <span class="c-str">'Full Stack'</span> | <span class="c-str">'Data Science'</span>  <span class="c-comment">// ← add here</span>
+
+<span class="c-comment">// 2. Add colour style to categoryStyle object (line ~365)</span>
+<span class="c-str">'Data Science'</span>: <span class="c-str">'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700'</span>,
+
+<span class="c-comment">// 3. Add to CATEGORIES array (line ~374)</span>
+<span class="c-type">const</span> CATEGORIES: Category[] = [<span class="c-str">'All'</span>, <span class="c-str">'Generative AI'</span>, <span class="c-str">'Computer Vision'</span>,
+  <span class="c-str">'Machine Learning'</span>, <span class="c-str">'Automation'</span>, <span class="c-str">'Full Stack'</span>, <span class="c-str">'Data Science'</span>]  <span class="c-comment">// ← add here</span></code></pre>
+    </div>
+  </div>
+
+  <!-- ── Step 3 : Gradients ───────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 3</span>
+      Gradient Reference — Ready-to-Use Values
+    </div>
+
+    <p>Copy any value below directly into the <code>gradient</code> field:</p>
+
+    <div class="grad-grid">
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#8b5cf6,#a855f7,#6366f1)"></div>
+        <div class="grad-label">from-violet-500 via-purple-500 to-indigo-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#10b981,#14b8a6,#06b6d4)"></div>
+        <div class="grad-label">from-emerald-500 via-teal-500 to-cyan-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#f43f5e,#f97316,#fbbf24)"></div>
+        <div class="grad-label">from-rose-500 via-orange-500 to-amber-400</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#3b82f6,#06b6d4)"></div>
+        <div class="grad-label">from-blue-500 to-cyan-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#f97316,#f59e0b)"></div>
+        <div class="grad-label">from-orange-500 to-amber-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#ec4899,#f43f5e)"></div>
+        <div class="grad-label">from-pink-500 to-rose-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#d946ef,#a855f7)"></div>
+        <div class="grad-label">from-fuchsia-500 to-purple-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#0ea5e9,#3b82f6)"></div>
+        <div class="grad-label">from-sky-500 to-blue-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#22c55e,#10b981)"></div>
+        <div class="grad-label">from-green-500 to-emerald-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#eab308,#f97316)"></div>
+        <div class="grad-label">from-yellow-500 to-orange-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#ef4444,#f97316)"></div>
+        <div class="grad-label">from-red-500 to-orange-500</div>
+      </div>
+      <div class="grad-card">
+        <div class="grad-bar" style="background:linear-gradient(to right,#6366f1,#8b5cf6)"></div>
+        <div class="grad-label">from-indigo-500 to-violet-500</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 4 : Video Embed ─────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 4</span>
+      Getting the LinkedIn Video Embed URL
+    </div>
+
+    <p>When a project's Demo should open a video popup instead of redirecting:</p>
+
+    <ol style="padding-left:1.4rem; margin-top:.5rem">
+      <li>Open your LinkedIn post in a browser.</li>
+      <li>Click the <strong>⋯ (More options)</strong> menu on the post.</li>
+      <li>Select <strong>Embed this post</strong>.</li>
+      <li>Copy only the <code>src</code> value from the <code>&lt;iframe&gt;</code> tag:<br>
+        <pre style="margin:.5rem 0"><code><span class="c-comment">// Full iframe LinkedIn gives you:</span>
+&lt;iframe src="<span class="c-str">https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:XXXXXXXXX?compact=1</span>"
+        height="399" width="504" ...&gt;&lt;/iframe&gt;
+
+<span class="c-comment">// Only paste the src value into videoEmbed:</span>
+<span class="c-key">videoEmbed</span>: <span class="c-str">'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:XXXXXXXXX?compact=1'</span>,</code></pre>
+      </li>
+      <li>Set <code>demo: '#'</code> — it is ignored when <code>videoEmbed</code> is present.</li>
+    </ol>
+
+    <div class="warn">
+      ⚠️ If you do <strong>not</strong> have a LinkedIn video, simply omit the <code>videoEmbed</code> field entirely. The Demo button will then use the <code>demo</code> URL as a normal external link.
+    </div>
+  </div>
+
+  <!-- ── Step 5 : Full Examples ───────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 5</span>
+      Full Copy-Paste Examples
+    </div>
+
+    <p><strong>Example A — Grid card with LinkedIn video popup:</strong></p>
+    <pre><code>{
+  title      : <span class="c-str">'Sentiment Analysis Dashboard'</span>,
+  subtitle   : <span class="c-str">'Real-Time NLP Insights with Streamlit'</span>,
+  description: <span class="c-str">'Interactive dashboard that performs real-time sentiment analysis on live Twitter data using a fine-tuned BERT model. Visualises positive / negative / neutral trends with Chart.js and allows CSV export.'</span>,
+  tech       : [<span class="c-str">'BERT'</span>, <span class="c-str">'Transformers'</span>, <span class="c-str">'Streamlit'</span>, <span class="c-str">'Python'</span>, <span class="c-str">'Pandas'</span>],
+  category   : <span class="c-str">'Machine Learning'</span>,
+  github     : <span class="c-str">'https://github.com/C-Logesh-Perumal-29/sentiment-dashboard'</span>,
+  demo       : <span class="c-str">'#'</span>,
+  featured   : <span class="c-bool">false</span>,
+  badge      : <span class="c-str">'NLP'</span>,
+  gradient   : <span class="c-str">'from-sky-500 to-blue-500'</span>,
+  videoEmbed : <span class="c-str">'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:XXXXXXXXX?compact=1'</span>,
+},</code></pre>
+
+    <p style="margin-top:1.25rem"><strong>Example B — Featured card with live demo link (no video):</strong></p>
+    <pre><code>{
+  title      : <span class="c-str">'ChurnPredict AI'</span>,
+  subtitle   : <span class="c-str">'Customer Churn Prediction with XGBoost'</span>,
+  description: <span class="c-str">'End-to-end ML pipeline for predicting customer churn with 91% accuracy. Features automated feature engineering, SHAP explainability, and a FastAPI inference endpoint deployed on Render.'</span>,
+  tech       : [<span class="c-str">'XGBoost'</span>, <span class="c-str">'SHAP'</span>, <span class="c-str">'FastAPI'</span>, <span class="c-str">'Scikit-learn'</span>, <span class="c-str">'Python'</span>, <span class="c-str">'Pandas'</span>],
+  category   : <span class="c-str">'Machine Learning'</span>,
+  github     : <span class="c-str">'https://github.com/C-Logesh-Perumal-29/churn-predict'</span>,
+  demo       : <span class="c-str">'https://churn-predict.onrender.com'</span>,
+  featured   : <span class="c-bool">true</span>,
+  badge      : <span class="c-str">'91% Accuracy'</span>,
+  gradient   : <span class="c-str">'from-green-500 to-emerald-500'</span>,
+  <span class="c-comment">// no videoEmbed — Demo button opens the live URL directly</span>
+},</code></pre>
+
+    <div class="note">
+      💡 <strong>Featured vs Grid:</strong> Set <code>featured: true</code> for your 2–3 best projects. Featured cards are always visible (not filtered) and use the larger card layout. All others should be <code>featured: false</code>.
+    </div>
+  </div>
+
+  <!-- ── Step 6 : Where to Insert ─────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">
+      <span class="step-badge">STEP 6</span>
+      Where to Insert in the File
+    </div>
+
+    <pre><code><span class="c-type">const</span> projects: Project[] = [
+
+  <span class="c-comment">// ── FEATURED ─────────────── paste featured projects here (featured: true)</span>
+  { ... },
+  { ... },
+
+  <span class="c-comment">// ── GRID ─────────────────── paste non-featured projects here (featured: false)</span>
+  { ... },   <span class="c-comment">// ← add your new project here</span>
+
+]</code></pre>
+
+    <ul>
+      <li>Append <strong>featured</strong> cards inside the <code>// ── FEATURED</code> block.</li>
+      <li>Append <strong>grid</strong> cards inside the <code>// ── GRID</code> block.</li>
+      <li>Order within each block controls display order on the page.</li>
+    </ul>
+  </div>
+
+  <!-- ── Footer ───────────────────────────────────────────────── -->
+  <p style="text-align:center; color:#475569; font-size:.8rem; margin-top:2rem;">
+    Portfolio — Logesh Perumal C &nbsp;·&nbsp; Reference Guide Generated 2026
+  </p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient Reference — Portfolio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #060914;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto 3rem;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg,#4f46e5,#7c3aed);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg,#a78bfa,#60a5fa,#34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+      margin-bottom: .75rem;
+    }
+    .hero p {
+      color: #64748b;
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Search / Filter bar ── */
+    .controls {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      align-items: center;
+      padding: 0 .5rem;
+    }
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: .65rem;
+      color: #e2e8f0;
+      font-size: .9rem;
+      padding: .6rem 1rem .6rem 2.4rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-wrap input:focus { border-color: #6366f1; }
+    .search-wrap svg {
+      position: absolute;
+      left: .75rem; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      stroke: #475569;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+    .filter-btn {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: .65rem;
+      color: #94a3b8;
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .6rem 1.1rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: #6366f1;
+      color: #a78bfa;
+      background: #1e1b4b;
+    }
+
+    /* ── Section headings ── */
+    .section-label {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 .5rem;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #1e293b;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto 2.5rem;
+      padding: 0 .5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 1rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .22s, box-shadow .22s, border-color .22s;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.5);
+      border-color: #334155;
+    }
+
+    /* gradient swatch */
+    .swatch {
+      height: 72px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .swatch-name {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      background: rgba(0,0,0,.25);
+      padding: .2rem .55rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* copy toast */
+    .copy-toast {
+      position: absolute;
+      top: 6px; right: 6px;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 700;
+      padding: .2rem .5rem;
+      border-radius: .4rem;
+      opacity: 0;
+      transition: opacity .2s;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    .card:hover .copy-toast { opacity: 1; }
+
+    /* card body */
+    .card-body { padding: .85rem 1rem 1rem; }
+    .card-title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: .25rem;
+    }
+    .card-code {
+      font-size: .7rem;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      color: #64748b;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+    .hex-row {
+      display: flex;
+      gap: .4rem;
+      margin-top: .6rem;
+      flex-wrap: wrap;
+    }
+    .hex-chip {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      background: #1e293b;
+      border-radius: .35rem;
+      padding: .18rem .45rem;
+      font-size: .65rem;
+      font-family: monospace;
+      color: #94a3b8;
+    }
+    .hex-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Copied overlay ── */
+    .copied-overlay {
+      position: fixed;
+      bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      background: #4f46e5;
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
+      padding: .6rem 1.5rem;
+      border-radius: 999px;
+      box-shadow: 0 8px 32px rgba(79,70,229,.4);
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .copied-overlay.show { opacity: 1; }
+
+    /* ── Count badge ── */
+    .count-badge {
+      display: inline-block;
+      background: #1e293b;
+      color: #64748b;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      margin-left: .5rem;
+      vertical-align: middle;
+    }
+
+    /* ── Hidden ── */
+    .hidden { display: none !important; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      color: #1e293b;
+      font-size: .78rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ───────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-badge">🎨 Visual Reference</div>
+  <h1>Gradient Reference Guide</h1>
+  <p>Click any card to copy the Tailwind class directly to your clipboard. Use in the <code style="color:#a78bfa;background:#1e1b4b;padding:.1rem .35rem;border-radius:.3rem;font-size:.8rem">gradient</code> field of any project.</p>
+</div>
+
+<!-- ── Controls ───────────────────────────────────────────── -->
+<div class="controls">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Search gradient name or colour…" oninput="filterCards()" />
+  </div>
+  <button class="filter-btn active" onclick="setFilter('all', this)">All <span class="count-badge" id="cnt-all"></span></button>
+  <button class="filter-btn" onclick="setFilter('dual', this)">2-Stop <span class="count-badge" id="cnt-dual"></span></button>
+  <button class="filter-btn" onclick="setFilter('tri', this)">3-Stop <span class="count-badge" id="cnt-tri"></span></button>
+  <button class="filter-btn" onclick="setFilter('multi', this)">Multi <span class="count-badge" id="cnt-multi"></span></button>
+  <button class="filter-btn" onclick="setFilter('warm', this)">Warm <span class="count-badge" id="cnt-warm"></span></button>
+  <button class="filter-btn" onclick="setFilter('cool', this)">Cool <span class="count-badge" id="cnt-cool"></span></button>
+  <button class="filter-btn" onclick="setFilter('dark', this)">Dark <span class="count-badge" id="cnt-dark"></span></button>
+  <button class="filter-btn" onclick="setFilter('neon', this)">Neon <span class="count-badge" id="cnt-neon"></span></button>
+  <button class="filter-btn" onclick="setFilter('pastel', this)">Pastel <span class="count-badge" id="cnt-pastel"></span></button>
+  <button class="filter-btn" onclick="setFilter('metallic', this)">Metallic <span class="count-badge" id="cnt-metallic"></span></button>
+  <button class="filter-btn" onclick="setFilter('earth', this)">Earth <span class="count-badge" id="cnt-earth"></span></button>
+</div>
+
+<!-- ── Mode toggles ─────────────────────────────────────────── -->
+<div class="controls" style="margin-top:-.25rem; gap:.5rem">
+  <span style="font-size:.75rem;color:#475569;font-weight:600">Direction:</span>
+  <button class="filter-btn active" id="dir-135" onclick="setDirection(135,this)">↘ Diagonal</button>
+  <button class="filter-btn" id="dir-90"  onclick="setDirection(90,this)">→ Horizontal</button>
+  <button class="filter-btn" id="dir-180" onclick="setDirection(180,this)">↓ Vertical</button>
+  <span style="font-size:.75rem;color:#475569;font-weight:600;margin-left:1rem">Copy as:</span>
+  <button class="filter-btn active" id="mode-tw"  onclick="setCopyMode('tw',this)">Tailwind</button>
+  <button class="filter-btn"        id="mode-css" onclick="setCopyMode('css',this)">CSS</button>
+  <span style="font-size:.75rem;color:#475569;font-weight:600;margin-left:1rem">Sort:</span>
+  <button class="filter-btn active" id="sort-default" onclick="setSort('default',this)">Default</button>
+  <button class="filter-btn"        id="sort-az"      onclick="setSort('az',this)">A → Z</button>
+</div>
+
+<!-- Copied toast -->
+<div class="copied-overlay" id="copiedOverlay">✓ Copied to clipboard!</div>
+
+<!-- ── Sections populated by JS ───────────────────────────── -->
+<div id="root"></div>
+
+<footer>Portfolio — Logesh Perumal C · Gradient Reference 2026</footer>
+
+<script>
+const gradients = [
+
+  // ── LUXURY / PREMIUM — 3-STOP ─────────────────────────────────
+  { name:'Royal Amethyst',    tw:'from-violet-600 via-purple-600 to-indigo-600',   stops:['#7c3aed','#9333ea','#4f46e5'], tags:['tri','cool'] },
+  { name:'Midnight Iris',     tw:'from-indigo-700 via-violet-700 to-purple-800',   stops:['#3730a3','#6d28d9','#6b21a8'], tags:['tri','cool','dark'] },
+  { name:'Gold Rush',         tw:'from-amber-400 via-yellow-400 to-orange-400',    stops:['#fbbf24','#facc15','#fb923c'], tags:['tri','warm','metallic'] },
+  { name:'Champagne Glow',    tw:'from-yellow-300 via-amber-400 to-orange-500',    stops:['#fde047','#fbbf24','#f97316'], tags:['tri','warm','metallic'] },
+  { name:'Rose Gold',         tw:'from-pink-400 via-rose-400 to-orange-300',       stops:['#f472b6','#fb7185','#fdba74'], tags:['tri','warm','metallic'] },
+  { name:'Obsidian Jade',     tw:'from-slate-800 via-emerald-800 to-teal-700',     stops:['#1e293b','#065f46','#0f766e'], tags:['tri','cool','dark','earth'] },
+  { name:'Arctic Sapphire',   tw:'from-sky-400 via-blue-500 to-indigo-600',        stops:['#38bdf8','#3b82f6','#4f46e5'], tags:['tri','cool'] },
+  { name:'Velvet Plum',       tw:'from-purple-900 via-fuchsia-800 to-pink-800',    stops:['#4a044e','#86198f','#9d174d'], tags:['tri','dark'] },
+  { name:'Cobalt Aurora',     tw:'from-blue-600 via-cyan-500 to-teal-400',         stops:['#2563eb','#06b6d4','#2dd4bf'], tags:['tri','cool'] },
+  { name:'Scarlet Ember',     tw:'from-red-600 via-rose-500 to-orange-500',        stops:['#dc2626','#f43f5e','#f97316'], tags:['tri','warm'] },
+  { name:'Forest Canopy',     tw:'from-green-700 via-emerald-600 to-teal-500',     stops:['#15803d','#059669','#14b8a6'], tags:['tri','cool','earth'] },
+  { name:'Neon Horizon',      tw:'from-fuchsia-500 via-pink-500 to-rose-400',      stops:['#d946ef','#ec4899','#fb7185'], tags:['tri','warm','neon'] },
+  { name:'Violet Cosmos',     tw:'from-violet-500 via-purple-500 to-indigo-500',   stops:['#8b5cf6','#a855f7','#6366f1'], tags:['tri','cool'] },
+  { name:'Emerald Sea',       tw:'from-emerald-500 via-teal-500 to-cyan-500',      stops:['#10b981','#14b8a6','#06b6d4'], tags:['tri','cool'] },
+  { name:'Sunset Blaze',      tw:'from-rose-500 via-orange-500 to-amber-400',      stops:['#f43f5e','#f97316','#fbbf24'], tags:['tri','warm'] },
+
+  // ── NEON & VIBRANT ────────────────────────────────────────────
+  { name:'Cyber Punk',        tw:'from-fuchsia-400 via-purple-500 to-cyan-400',    stops:['#e879f9','#a855f7','#22d3ee'], tags:['tri','neon','cool'] },
+  { name:'Electric Violet',   tw:'from-violet-500 via-fuchsia-400 to-pink-400',    stops:['#8b5cf6','#e879f9','#f472b6'], tags:['tri','neon','cool'] },
+  { name:'Neon Aqua',         tw:'from-cyan-400 via-teal-300 to-green-400',        stops:['#22d3ee','#5eead4','#4ade80'], tags:['tri','neon','cool'] },
+  { name:'Electric Orange',   tw:'from-orange-400 via-amber-300 to-yellow-300',    stops:['#fb923c','#fcd34d','#fde047'], tags:['tri','neon','warm'] },
+  { name:'Glitch Pink',       tw:'from-pink-500 via-fuchsia-400 to-violet-500',    stops:['#ec4899','#e879f9','#8b5cf6'], tags:['tri','neon','cool'] },
+  { name:'Laser Lime',        tw:'from-lime-400 via-green-400 to-emerald-400',     stops:['#a3e635','#4ade80','#34d399'], tags:['tri','neon','cool'] },
+  { name:'Neon Sunset',       tw:'from-yellow-400 via-orange-400 to-pink-500',     stops:['#facc15','#fb923c','#ec4899'], tags:['tri','neon','warm'] },
+  { name:'Plasma Blue',       tw:'from-blue-400 via-indigo-400 to-violet-400',     stops:['#60a5fa','#818cf8','#a78bfa'], tags:['tri','neon','cool'] },
+
+  // ── PASTEL & SOFT ─────────────────────────────────────────────
+  { name:'Cotton Candy',      tw:'from-pink-200 via-purple-200 to-indigo-200',     stops:['#fbcfe8','#e9d5ff','#c7d2fe'], tags:['tri','pastel','cool'] },
+  { name:'Peach Blossom',     tw:'from-orange-100 via-rose-200 to-pink-200',       stops:['#ffedd5','#fecdd3','#fbcfe8'], tags:['tri','pastel','warm'] },
+  { name:'Baby Sky',          tw:'from-sky-200 via-blue-100 to-indigo-200',        stops:['#bae6fd','#dbeafe','#c7d2fe'], tags:['tri','pastel','cool'] },
+  { name:'Mint Cream',        tw:'from-teal-100 via-cyan-100 to-sky-200',          stops:['#ccfbf1','#cffafe','#bae6fd'], tags:['tri','pastel','cool'] },
+  { name:'Lilac Dream',       tw:'from-violet-200 via-fuchsia-100 to-pink-100',    stops:['#ddd6fe','#fae8ff','#fce7f3'], tags:['tri','pastel','cool'] },
+  { name:'Butter Milk',       tw:'from-yellow-100 via-amber-100 to-orange-100',    stops:['#fef9c3','#fef3c7','#ffedd5'], tags:['tri','pastel','warm'] },
+  { name:'Lavender Haze',     tw:'from-purple-200 to-pink-200',                    stops:['#e9d5ff','#fbcfe8'],           tags:['dual','pastel','cool'] },
+  { name:'Cloud Blush',       tw:'from-rose-100 to-sky-200',                       stops:['#ffe4e6','#bae6fd'],           tags:['dual','pastel','cool'] },
+
+  // ── METALLIC / LUXURY SHINE ───────────────────────────────────
+  { name:'Liquid Gold',       tw:'from-yellow-200 via-amber-400 to-yellow-600',    stops:['#fef08a','#fbbf24','#ca8a04'], tags:['tri','metallic','warm'] },
+  { name:'Platinum Silver',   tw:'from-slate-200 via-gray-300 to-slate-400',       stops:['#e2e8f0','#d1d5db','#94a3b8'], tags:['tri','metallic','cool'] },
+  { name:'Bronze Idol',       tw:'from-amber-300 via-orange-400 to-amber-700',     stops:['#fcd34d','#fb923c','#b45309'], tags:['tri','metallic','warm','dark'] },
+  { name:'Molten Copper',     tw:'from-orange-300 via-amber-500 to-red-700',       stops:['#fdba74','#f59e0b','#b91c1c'], tags:['tri','metallic','warm','dark'] },
+  { name:'Chrome Frost',      tw:'from-slate-100 via-blue-100 to-indigo-200',      stops:['#f1f5f9','#dbeafe','#c7d2fe'], tags:['tri','metallic','cool','pastel'] },
+  { name:'Black Gold',        tw:'from-gray-900 via-amber-800 to-yellow-600',      stops:['#111827','#92400e','#ca8a04'], tags:['tri','metallic','dark','warm'] },
+
+  // ── EARTH & NATURE ────────────────────────────────────────────
+  { name:'Desert Sand',       tw:'from-amber-200 via-orange-200 to-yellow-300',    stops:['#fde68a','#fed7aa','#fde047'], tags:['tri','earth','warm','pastel'] },
+  { name:'Autumn Maple',      tw:'from-red-500 via-orange-400 to-amber-300',       stops:['#ef4444','#fb923c','#fcd34d'], tags:['tri','earth','warm'] },
+  { name:'Mossy Stone',       tw:'from-stone-600 via-green-800 to-emerald-700',    stops:['#57534e','#166534','#065f46'], tags:['tri','earth','dark'] },
+  { name:'Terra Cotta',       tw:'from-orange-700 via-red-600 to-rose-800',        stops:['#c2410c','#dc2626','#9f1239'], tags:['tri','earth','warm','dark'] },
+  { name:'Prairie Wheat',     tw:'from-yellow-600 via-amber-500 to-orange-400',    stops:['#ca8a04','#f59e0b','#fb923c'], tags:['tri','earth','warm'] },
+  { name:'Deep Ocean',        tw:'from-blue-900 via-teal-800 to-cyan-700',         stops:['#1e3a8a','#115e59','#0e7490'], tags:['tri','earth','dark','cool'] },
+  { name:'Pine Forest',       tw:'from-green-900 via-emerald-800 to-teal-700',     stops:['#14532d','#065f46','#0f766e'], tags:['tri','earth','dark','cool'] },
+  { name:'Canyon Dusk',       tw:'from-orange-900 via-rose-800 to-purple-900',     stops:['#7c2d12','#9f1239','#4a044e'], tags:['tri','earth','dark','warm'] },
+  { name:'Sahara Dune',       tw:'from-amber-100 via-yellow-200 to-orange-200',    stops:['#fef3c7','#fef9c3','#fed7aa'], tags:['tri','earth','warm','pastel'] },
+
+  // ── RAINBOW / MULTI-STOP ──────────────────────────────────────
+  { name:'Full Spectrum',     tw:'from-red-500 via-yellow-400 via-green-400 via-blue-500 to-purple-500', stops:['#ef4444','#facc15','#4ade80','#3b82f6','#a855f7'], tags:['multi','cool','warm'] },
+  { name:'Aurora Borealis',   tw:'from-green-400 via-cyan-400 via-blue-500 to-purple-600',               stops:['#4ade80','#22d3ee','#3b82f6','#9333ea'],          tags:['multi','cool','neon'] },
+  { name:'Pride Prism',       tw:'from-red-400 via-orange-400 via-yellow-300 via-green-400 to-blue-500', stops:['#f87171','#fb923c','#fde047','#4ade80','#3b82f6'], tags:['multi','warm','cool'] },
+  { name:'Tropical Storm',    tw:'from-lime-400 via-cyan-400 via-blue-500 to-indigo-600',                stops:['#a3e635','#22d3ee','#3b82f6','#4f46e5'],          tags:['multi','cool','neon'] },
+  { name:'Candy Rainbow',     tw:'from-pink-400 via-fuchsia-400 via-violet-400 to-cyan-400',             stops:['#f472b6','#e879f9','#a78bfa','#22d3ee'],          tags:['multi','cool','neon','pastel'] },
+  { name:'Fire & Ice',        tw:'from-orange-500 via-red-500 via-purple-600 to-blue-600',               stops:['#f97316','#ef4444','#9333ea','#2563eb'],          tags:['multi','warm','cool'] },
+
+  // ── CLEAN 2-STOP ──────────────────────────────────────────────
+  { name:'Ocean Breeze',      tw:'from-blue-500 to-cyan-400',       stops:['#3b82f6','#22d3ee'], tags:['dual','cool'] },
+  { name:'Mint Lagoon',       tw:'from-teal-400 to-cyan-500',       stops:['#2dd4bf','#06b6d4'], tags:['dual','cool'] },
+  { name:'Solar Flare',       tw:'from-orange-500 to-amber-400',    stops:['#f97316','#fbbf24'], tags:['dual','warm'] },
+  { name:'Candy Bloom',       tw:'from-pink-500 to-fuchsia-500',    stops:['#ec4899','#d946ef'], tags:['dual','warm'] },
+  { name:'Electric Lime',     tw:'from-lime-400 to-green-500',      stops:['#a3e635','#22c55e'], tags:['dual','cool','neon'] },
+  { name:'Crimson Tide',      tw:'from-red-500 to-rose-600',        stops:['#ef4444','#e11d48'], tags:['dual','warm'] },
+  { name:'Deep Space',        tw:'from-slate-900 to-indigo-900',    stops:['#0f172a','#1e1b4b'], tags:['dual','dark','cool'] },
+  { name:'Copper Bronze',     tw:'from-amber-600 to-orange-700',    stops:['#d97706','#c2410c'], tags:['dual','warm','dark','metallic'] },
+  { name:'Icy Blush',         tw:'from-sky-300 to-indigo-400',      stops:['#7dd3fc','#818cf8'], tags:['dual','cool','pastel'] },
+  { name:'Verdant Glow',      tw:'from-green-400 to-emerald-600',   stops:['#4ade80','#059669'], tags:['dual','cool'] },
+  { name:'Lavender Mist',     tw:'from-violet-400 to-purple-500',   stops:['#a78bfa','#a855f7'], tags:['dual','cool'] },
+  { name:'Tangerine Dream',   tw:'from-orange-400 to-pink-500',     stops:['#fb923c','#ec4899'], tags:['dual','warm'] },
+  { name:'Midnight Navy',     tw:'from-blue-900 to-slate-900',      stops:['#1e3a8a','#0f172a'], tags:['dual','dark','cool'] },
+  { name:'Soft Coral',        tw:'from-rose-400 to-orange-300',     stops:['#fb7185','#fdba74'], tags:['dual','warm','pastel'] },
+  { name:'Twilight Indigo',   tw:'from-indigo-500 to-purple-600',   stops:['#6366f1','#9333ea'], tags:['dual','cool'] },
+  { name:'Mango Sorbet',      tw:'from-yellow-400 to-orange-500',   stops:['#facc15','#f97316'], tags:['dual','warm'] },
+  { name:'Silver Storm',      tw:'from-slate-400 to-slate-600',     stops:['#94a3b8','#475569'], tags:['dual','dark','metallic'] },
+  { name:'Neon Mint',         tw:'from-cyan-400 to-teal-500',       stops:['#22d3ee','#14b8a6'], tags:['dual','cool','neon'] },
+  { name:'Plum Wine',         tw:'from-purple-700 to-fuchsia-700',  stops:['#7e22ce','#a21caf'], tags:['dual','dark','cool'] },
+  { name:'Aurora Green',      tw:'from-emerald-400 to-cyan-500',    stops:['#34d399','#06b6d4'], tags:['dual','cool'] },
+  { name:'Blue Cyan',         tw:'from-blue-500 to-cyan-500',       stops:['#3b82f6','#06b6d4'], tags:['dual','cool'] },
+  { name:'Amber Fire',        tw:'from-orange-500 to-amber-500',    stops:['#f97316','#f59e0b'], tags:['dual','warm'] },
+  { name:'Petal Rose',        tw:'from-pink-500 to-rose-500',       stops:['#ec4899','#f43f5e'], tags:['dual','warm'] },
+  { name:'Fuchsia Galaxy',    tw:'from-fuchsia-500 to-purple-500',  stops:['#d946ef','#a855f7'], tags:['dual','cool'] },
+  { name:'Sky Steel',         tw:'from-sky-500 to-blue-500',        stops:['#0ea5e9','#3b82f6'], tags:['dual','cool'] },
+  { name:'Grass Jade',        tw:'from-green-500 to-emerald-500',   stops:['#22c55e','#10b981'], tags:['dual','cool','earth'] },
+  { name:'Sun Citrus',        tw:'from-yellow-500 to-orange-500',   stops:['#eab308','#f97316'], tags:['dual','warm'] },
+  { name:'Lava Red',          tw:'from-red-500 to-orange-500',      stops:['#ef4444','#f97316'], tags:['dual','warm'] },
+  { name:'Indigo Violet',     tw:'from-indigo-500 to-violet-500',   stops:['#6366f1','#8b5cf6'], tags:['dual','cool'] },
+]
+
+let currentFilter = 'all'
+let currentDir    = 135
+let currentSort   = 'default'
+let copyMode      = 'tw'
+
+// CSS direction keyword map
+const dirMap = { 90:'to right', 180:'to bottom', 135:'to bottom right' }
+
+function cssGrad(g) {
+  const dir = dirMap[currentDir] || 'to bottom right'
+  return `linear-gradient(${dir}, ${g.stops.join(', ')})`
+}
+
+function copyValue(g) {
+  if (copyMode === 'css') {
+    return `background: ${cssGrad(g)};`
+  }
+  return g.tw
+}
+
+function makeCard(g) {
+  const card = document.createElement('div')
+  card.className = 'card'
+
+  const viaChips = g.stops.slice(1, -1)
+    .map(s => `<div class="hex-chip"><div class="hex-dot" style="background:${s}"></div>${s}</div>`)
+    .join('')
+
+  card.innerHTML = `
+    <div class="swatch" style="background:${cssGrad(g)}">
+      <span class="swatch-name">${g.name}</span>
+    </div>
+    <div class="copy-toast">Click to copy ${copyMode === 'css' ? 'CSS' : 'Tailwind'}</div>
+    <div class="card-body">
+      <div class="card-title">${g.name}</div>
+      <div class="card-code" style="color:${copyMode==='css'?'#67e8f9':'#64748b'}">${copyMode === 'css' ? cssGrad(g) : g.tw}</div>
+      <div class="hex-row">
+        <div class="hex-chip"><div class="hex-dot" style="background:${g.stops[0]}"></div>${g.stops[0]}</div>
+        ${viaChips}
+        <div class="hex-chip"><div class="hex-dot" style="background:${g.stops[g.stops.length-1]}"></div>${g.stops[g.stops.length-1]}</div>
+      </div>
+    </div>`
+
+  card.addEventListener('click', () => {
+    const val = copyValue(g)
+    navigator.clipboard.writeText(val).catch(() => {})
+    const overlay = document.getElementById('copiedOverlay')
+    overlay.textContent = `✓ Copied: ${val.length > 55 ? val.slice(0,55)+'…' : val}`
+    overlay.classList.add('show')
+    setTimeout(() => overlay.classList.remove('show'), 2200)
+  })
+  return card
+}
+
+function renderAll(list) {
+  let sorted = [...list]
+  if (currentSort === 'az') sorted.sort((a,b) => a.name.localeCompare(b.name))
+
+  const root = document.getElementById('root')
+  root.innerHTML = ''
+
+  const sections = [
+    { label:'⚡ Neon & Vibrant',              items: sorted.filter(g => g.tags.includes('neon') && !g.tags.includes('pastel') && !g.tags.includes('multi')) },
+    { label:'🌈 Rainbow & Multi-Stop',        items: sorted.filter(g => g.tags.includes('multi')) },
+    { label:'✨ Luxury & Premium — 3-Stop',   items: sorted.filter(g => g.tags.includes('tri') && !g.tags.includes('dark') && !g.tags.includes('neon') && !g.tags.includes('pastel') && !g.tags.includes('earth') && !g.tags.includes('metallic') && !g.tags.includes('multi')) },
+    { label:'💰 Metallic & Shine',            items: sorted.filter(g => g.tags.includes('metallic') && !g.tags.includes('dark')) },
+    { label:'🌿 Earth & Nature',              items: sorted.filter(g => g.tags.includes('earth') && !g.tags.includes('metallic') && !g.tags.includes('neon')) },
+    { label:'🌸 Pastel & Soft',               items: sorted.filter(g => g.tags.includes('pastel') && !g.tags.includes('metallic') && !g.tags.includes('earth') && !g.tags.includes('neon')) },
+    { label:'🌑 Dark & Deep',                 items: sorted.filter(g => g.tags.includes('dark') && !g.tags.includes('neon') && !g.tags.includes('metallic') && !g.tags.includes('earth')) },
+    { label:'❄️ Clean 2-Stop — Cool',         items: sorted.filter(g => g.tags.includes('dual') && g.tags.includes('cool') && !g.tags.includes('dark') && !g.tags.includes('neon') && !g.tags.includes('pastel')) },
+    { label:'🔥 Clean 2-Stop — Warm',         items: sorted.filter(g => g.tags.includes('dual') && g.tags.includes('warm') && !g.tags.includes('dark') && !g.tags.includes('neon') && !g.tags.includes('pastel')) },
+  ]
+
+  let anyContent = false
+  sections.forEach(sec => {
+    if (sec.items.length === 0) return
+    anyContent = true
+    const label = document.createElement('div')
+    label.className = 'section-label'
+    label.innerHTML = `${sec.label} <span class="count-badge">${sec.items.length}</span>`
+    root.appendChild(label)
+    const grid = document.createElement('div')
+    grid.className = 'grid'
+    sec.items.forEach(g => grid.appendChild(makeCard(g)))
+    root.appendChild(grid)
+  })
+
+  if (!anyContent) {
+    root.innerHTML = '<p style="text-align:center;color:#475569;padding:3rem">No gradients match your search.</p>'
+  }
+}
+
+function filterCards() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim()
+  let filtered = gradients
+  if (currentFilter !== 'all') filtered = filtered.filter(g => g.tags.includes(currentFilter))
+  if (query) {
+    filtered = filtered.filter(g =>
+      g.name.toLowerCase().includes(query) ||
+      g.tw.toLowerCase().includes(query) ||
+      g.stops.some(s => s.toLowerCase().includes(query))
+    )
+  }
+  renderAll(filtered)
+}
+
+function setFilter(tag, btn) {
+  currentFilter = tag
+  // only reset filter buttons (first controls row)
+  document.querySelectorAll('.filter-btn[onclick^="setFilter"]').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  filterCards()
+}
+
+function setDirection(deg, btn) {
+  currentDir = deg
+  document.querySelectorAll('.filter-btn[onclick^="setDirection"]').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  filterCards()
+}
+
+function setCopyMode(mode, btn) {
+  copyMode = mode
+  document.querySelectorAll('.filter-btn[onclick^="setCopyMode"]').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  filterCards()
+}
+
+function setSort(s, btn) {
+  currentSort = s
+  document.querySelectorAll('.filter-btn[onclick^="setSort"]').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  filterCards()
+}
+
+function updateCounts() {
+  const tags = ['all','dual','tri','multi','warm','cool','dark','neon','pastel','metallic','earth']
+  tags.forEach(tag => {
+    const el = document.getElementById(`cnt-${tag}`)
+    if (el) el.textContent = tag === 'all'
+      ? gradients.length
+      : gradients.filter(g => g.tags.includes(tag)).length
+  })
+}
+
+updateCounts()
+renderAll(gradients)
+</script>
+</body>
+</html>
