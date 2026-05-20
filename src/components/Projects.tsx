@@ -31,7 +31,7 @@ const projects: Project[] = [
       'Architected an enterprise-grade Retrieval-Augmented Generation (RAG) assistant using LangChain and LangGraph, integrating OpenAI API and Azure OpenAI with ChromaDB vector database for semantic search, context-aware document Q&A, and intelligent knowledge retrieval across unstructured data sources. Implemented agentic AI workflows using MCP (Model Context Protocol) with LangSmith for pipeline monitoring and hallucination mitigation.',
     tech: ['LangChain', 'LangGraph', 'LangSmith', 'OpenAI API', 'Azure OpenAI', 'ChromaDB', 'FastAPI', 'RAG', 'MCP', 'Python'],
     category: 'Generative AI',
-    github: 'https://github.com/C-Logesh-Perumal-29',
+    github: 'https://github.com/C-Logesh-Perumal-29/DocMind',
     demo: 'https://drive.google.com/file/d/1W6EjssTv2ZQLuCFiApidaFUx4NOVYUlO/view?usp=sharing',
     featured: true,
     badge: 'Agentic AI',
