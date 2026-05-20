@@ -1,13 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Github, Star, Filter, Play } from 'lucide-react'
+import { ExternalLink, Github, Star, Filter, Play, X } from 'lucide-react'
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from './ui/dialog'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,7 +32,7 @@ const projects: Project[] = [
     tech: ['LangChain', 'LangGraph', 'LangSmith', 'OpenAI API', 'Azure OpenAI', 'ChromaDB', 'FastAPI', 'RAG', 'MCP', 'Python'],
     category: 'Generative AI',
     github: 'https://github.com/C-Logesh-Perumal-29',
-    demo: '#',
+    demo: 'https://drive.google.com/file/d/1W6EjssTv2ZQLuCFiApidaFUx4NOVYUlO/view?usp=sharing',
     featured: true,
     badge: 'Agentic AI',
     gradient: 'from-violet-500 via-purple-500 to-indigo-500',
@@ -52,7 +45,7 @@ const projects: Project[] = [
     tech: ['CNN', 'TensorFlow', 'Keras', 'Transfer Learning', 'TensorFlow Hub', 'OpenCV', 'Streamlit', 'PIL', 'NumPy', 'Python'],
     category: 'Computer Vision',
     github: 'https://github.com/C-Logesh-Perumal-29/Food_Classification',
-    demo: 'https://www.linkedin.com/posts/logesh-perumal-c_foodclassification-machinelearning-computervision-activity-7169868848999981056-Pvwf?utm_source=share&utm_medium=member_desktop&rcm=ACoAADm7eGwBColLB6OZmpQNrxDvx4squeMptGM',
+    demo: 'https://drive.google.com/file/d/1gnkQEvuuB2GZ6aw-tD70Tu1hOMCBgAeF/view?usp=sharing',
     featured: true,
     badge: '93.5% Accuracy',
     gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
@@ -65,7 +58,7 @@ const projects: Project[] = [
     tech: ['Flask', 'Python', 'Ollama LLM', 'SQLite', 'Pandas', 'Chart.js', 'PDF Processing', 'OCR', 'REST APIs', 'HTML/CSS'],
     category: 'Generative AI',
     github: 'https://github.com/C-Logesh-Perumal-29/ExpensiaAI',
-    demo: '#',
+    demo: 'https://drive.google.com/file/d/1DZ5QcF8uPSFZ9g5B4wiK22TOridJo3Y6/view?usp=sharing',
     featured: true,
     badge: 'AI-Powered',
     gradient: 'from-rose-500 via-orange-500 to-amber-400',
@@ -119,6 +112,18 @@ const projects: Project[] = [
 
 const CATEGORIES: Category[] = ['All', 'Generative AI', 'Computer Vision', 'Machine Learning', 'Automation', 'Full Stack']
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Returns an embeddable iframe src for whichever video source the project has */
+const getEmbedSrc = (project: Project): string | null => {
+  if (project.videoEmbed) return project.videoEmbed
+  if (project.demo && project.demo !== '#') {
+    const match = project.demo.match(/\/file\/d\/([^/?]+)/)
+    if (match) return `https://drive.google.com/file/d/${match[1]}/preview`
+  }
+  return null
+}
+
 // ─── Video Modal ──────────────────────────────────────────────────────────────
 
 const VideoModal = ({
@@ -127,63 +132,103 @@ const VideoModal = ({
 }: {
   project: Project | null
   onClose: () => void
-}) => (
-  <Dialog open={project !== null} onOpenChange={onClose}>
-    <DialogContent className="max-w-4xl p-0 bg-white dark:bg-slate-900 overflow-hidden">
+}) => {
+  if (!project) return null
+  const embedSrc = getEmbedSrc(project)
+
+  /** Viewport-relative preview height (Google Drive gets more vertical room vs fixed 16:9 box) */
+  const previewHeight =
+    project.videoEmbed != null ? 'min(75dvh, 520px)' : 'calc(100dvh - 11rem)'
+
+  return (
+    <AnimatePresence>
       {project && (
-        <>
-          {/* Gradient header — mirrors UIDesigns lightbox */}
-          <div className={`relative p-6 sm:p-8 bg-gradient-to-r ${project.gradient}`}>
-            <DialogHeader>
-              <DialogTitle className="text-2xl sm:text-3xl text-white mb-2">
-                {project.title}
-              </DialogTitle>
-              <DialogDescription className="text-white/90 text-sm sm:text-base leading-relaxed">
-                {project.subtitle}
-              </DialogDescription>
-            </DialogHeader>
+        <motion.div
+          key="modal-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+          onClick={onClose}
+        >
+          {/* Cinematic blurred backdrop */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
 
-            <motion.a
-              href={`https://github.com/${project.github.split('github.com/')[1]}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-5 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl text-white font-semibold text-sm transition-all duration-300"
-              whileHover={{ scale: 1.05, x: 4 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Github className="w-4 h-4" /> View on GitHub
-            </motion.a>
-          </div>
+          <motion.div
+            key="modal-panel"
+            initial={{ opacity: 0, scale: 0.92, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 24 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-5xl max-h-[calc(100dvh-2rem)] flex flex-col rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.7)] border border-white/10"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* ── Header — title + Close (Drive pop-out in iframe cannot be removed; masked below) ── */}
+            <div className={`relative shrink-0 bg-gradient-to-r ${project.gradient} px-6 py-4 sm:px-8 sm:py-5 overflow-hidden`}>
+              {/* Noise texture */}
+              <div className="absolute inset-0 opacity-[0.06]"
+                style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
 
-          {/* Embedded LinkedIn video */}
-          <div className="p-4 sm:p-6 flex justify-center bg-gray-50 dark:bg-slate-800">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="w-full rounded-xl overflow-hidden shadow-xl"
-              style={{ maxWidth: 800 }}
-            >
-              <iframe
-                src={project.videoEmbed}
-                height="399"
-                width="100%"
-                frameBorder="0"
-                allowFullScreen
-                title={`${project.title} — Demo Video`}
-                className="block w-full"
-              />
-            </motion.div>
-          </div>
-        </>
+              <button
+                type="button"
+                onClick={onClose}
+                className="absolute top-3 right-4 sm:top-4 sm:right-6 z-10 inline-flex items-center justify-center rounded-full p-2.5 bg-black/25 hover:bg-black/40 border border-white/20 text-white backdrop-blur-sm transition-colors"
+                aria-label="Close demo preview"
+              >
+                <X className="w-4 h-4" strokeWidth={2.5} />
+              </button>
+
+              <div className="relative min-w-0 pr-16 sm:pr-36">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight drop-shadow-sm">
+                  {project.title}
+                </h2>
+                <p className="text-white/80 text-sm mt-1 font-medium">{project.subtitle}</p>
+              </div>
+            </div>
+
+            {/* ── Video — viewport-relative height ── */}
+            <div className="bg-black min-h-0 flex-1 overflow-hidden flex flex-col">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="relative w-full min-h-[200px]"
+                style={{ height: previewHeight }}
+              >
+                {embedSrc ? (
+                  <iframe
+                    src={embedSrc}
+                    title={`${project.title} — Demo`}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allow="autoplay; fullscreen"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-white/50 px-4 text-center text-sm">
+                    Demo not available for preview
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
-    </DialogContent>
-  </Dialog>
-)
+    </AnimatePresence>
+  )
+}
 
 // ─── Featured Card ────────────────────────────────────────────────────────────
 
-const FeaturedCard = ({ project, index }: { project: Project; index: number }) => (
+const FeaturedCard = ({
+  project,
+  index,
+  onDemoClick,
+}: {
+  project: Project
+  index: number
+  onDemoClick?: () => void
+}) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -279,20 +324,35 @@ const FeaturedCard = ({ project, index }: { project: Project; index: number }) =
           >
             <Github className="w-4 h-4" /> Code
           </motion.a>
-          <motion.a
-            href={project.demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl
-                        bg-gradient-to-r ${project.gradient}
-                        text-white font-bold text-sm
-                        shadow-lg hover:shadow-xl hover:opacity-95
-                        transition-all duration-300`}
-          >
-            <ExternalLink className="w-4 h-4" /> Live Demo
-          </motion.a>
+          {onDemoClick ? (
+            <motion.button
+              onClick={onDemoClick}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl
+                          bg-gradient-to-r ${project.gradient}
+                          text-white font-bold text-sm
+                          shadow-lg hover:shadow-xl hover:opacity-95
+                          transition-all duration-300`}
+            >
+              <Play className="w-4 h-4 fill-white" /> Live Demo
+            </motion.button>
+          ) : (
+            <motion.a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl
+                          bg-gradient-to-r ${project.gradient}
+                          text-white font-bold text-sm
+                          shadow-lg hover:shadow-xl hover:opacity-95
+                          transition-all duration-300`}
+            >
+              <ExternalLink className="w-4 h-4" /> Live Demo
+            </motion.a>
+          )}
         </div>
       </div>
 
@@ -522,7 +582,12 @@ const Projects = () => {
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {featured.map((project, index) => (
-            <FeaturedCard key={project.title} project={project} index={index} />
+            <FeaturedCard
+              key={project.title}
+              project={project}
+              index={index}
+              onDemoClick={getEmbedSrc(project) ? () => setVideoProject(project) : undefined}
+            />
           ))}
         </div>
 
